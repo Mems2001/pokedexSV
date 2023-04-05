@@ -3,7 +3,7 @@ import axios from "axios"
 export const load = async ({locals}) => {
 
   const loadPokemon = async() => {
-    const url = 'https://pokeapi.co/api/v2/pokemon?limit=12'
+    const url = 'https://pokeapi.co/api/v2/pokemon?limit=48'
     const res = await axios.get(url)
     return res.data.results
   }
@@ -22,7 +22,7 @@ export const load = async ({locals}) => {
   }
 
   if (locals.user) {
-    console.log(locals.user)
+    // console.log(locals.user)
     return {
       user: locals.user,
       pokemon: loadPokemon(),

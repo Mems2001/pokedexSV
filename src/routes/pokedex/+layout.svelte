@@ -4,9 +4,11 @@
   // console.log(data.user)
 </script>
 
-<div class="navbar bg-base-100 shadow-lg flex justify-between">
+<nav class="navbar fixed z-20 shadow-lg flex justify-between bg-gradient-to-t from-red-950 to-red-700">
   <div class="flex w-auto">
-    <a href="/pokedex" class="btn btn-ghost normal-case text-xl">Pokedex</a>
+    <a href="/pokedex" class="btn btn-ghost normal-case text-xl w-64">
+      <img class="w-auto" alt="Pokédex" src='src/routes/pokedex/logo.png'/>
+    </a>
   </div>
   <p>Welcome {username}</p>
   <div class="flex-none">
@@ -25,6 +27,6 @@
       <li><a href="/">Logout</a></li>
     </ul>
   </div>
-</div>
+</nav>
 
 <slot></slot>
