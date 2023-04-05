@@ -18,7 +18,7 @@
 
   const scheme = z.object({
     username: z.string().min(3).max(16).trim(),
-    password: z.string().min(5).max(16).trim()
+    // password: z.string().min(5).max(16).trim()
   })
 
   const handleSubmit = ({ form , action , data , cancel}) => {
@@ -61,10 +61,10 @@
           <input type="text" name="username" placeholder="Type your username" 
           class='w-40 input input-ghost input-sm {errorUser ? 'input-error' : ''}' bind:value={trainerName}/>
         </label>
-        <label for="password">
+        <!-- <label for="password">
           <input type="password" name="password" placeholder="password" 
           class='w-40 input input-ghost input-sm {errorPass ? 'input-error' : ''}'/>
-        </label>
+        </label> -->
         <button type="submit" class="btn btn-sm btn-outline btn-error w-12" name="submit">Go!</button>
       </form>
     </div>

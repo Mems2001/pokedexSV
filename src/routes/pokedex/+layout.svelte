@@ -1,7 +1,12 @@
 <script>
-  export let data
-  const {username} = data.user
-  // console.log(data.user)
+	import { onDestroy, onMount } from 'svelte';
+  // export let data
+  // const {username} = data.user
+  
+  import {user} from '../../stores/userStore'
+  
+  // console.log($user)
+  
 </script>
 
 <nav class="navbar fixed z-20 shadow-lg flex justify-between bg-gradient-to-t from-red-950 to-red-700">
@@ -10,7 +15,7 @@
       <img class="w-auto" alt="Pokédex" src='src/routes/pokedex/logo.png'/>
     </a>
   </div>
-  <p>Welcome {username}</p>
+  <p>Welcome {$user}!</p>
   <div class="flex-none">
     <ul class="menu menu-horizontal px-1">
       <li><a href="/">Team</a></li>
