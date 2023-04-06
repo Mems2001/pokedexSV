@@ -1,4 +1,6 @@
 import axios from "axios"
+import { user } from "../../../stores/userStore"
+import { redirect } from "@sveltejs/kit"
 
 export const load = async({params}) => {
 
@@ -12,5 +14,14 @@ export const load = async({params}) => {
 
   return {
     pokeman: pokemanLoad(url)
+  }
+}
+
+export const actions = {
+  logout: async(locals) => {
+    user.set('')
+    locals.user = undefined
+
+    throw redirect(303 , '/')
   }
 }

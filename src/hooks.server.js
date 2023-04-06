@@ -1,5 +1,6 @@
 // import PocketBase from 'pocketbase';
 // import { serializeNonPOJOs } from '$lib/utils';
+import { redirect } from "@sveltejs/kit";
 import { user } from "./stores/userStore"
 
 export const handle = async ({ event, resolve}) => {
@@ -18,11 +19,20 @@ export const handle = async ({ event, resolve}) => {
 			trainer = value
 		})
 
-		if (trainer != 'trainer') {
+		if (trainer) {
 			// console.log(trainer)
 			event.locals.user = trainer
 			// console.log(event.locals.user)
-		} 
+		} else {
+			event.locals.user = ''
+		}
+
+		//Protection for pokedex routes
+		if (event.url.pathname.startsWith('/pokedex')) {
+			if (!event.locals.user) {
+				throw redirect(303 , '/protected')
+			}
+		}
 
 	const response = await resolve(event);
 

@@ -6,7 +6,6 @@
   // console.log(types)
 </script>
 
-{#if data.username}
   <section class="flex flex-col justify-evenly h-auto w-auto pt-5 gap-y-5 bg-fixed bg-cover mt-16">
     <div class="h-auto w-auto">
       <div class="form-control flex flex-row justify-evenly">
@@ -47,13 +46,6 @@
       {/each}
     </div>
   </section>
-{:else}
-  <section class="h-screen bg-fixed bg-cover flex items-center justify-center">
-    <div class="card glass h-1/4 w-4/5 flex items-center justify-center">
-      <span class="text-black text-2xl">Sorry! You have to <a href="/" class="btn btn-sm btn-outline btn-error text-lg">login</a> to get access to the pokédex</span>
-    </div>
-  </section>
-{/if}
 
 <style>
   section {
