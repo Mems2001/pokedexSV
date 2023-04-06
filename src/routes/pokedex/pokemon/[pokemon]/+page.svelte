@@ -1,137 +1,34 @@
 <script>
+	import axios from 'axios';
+  import { each } from 'svelte/internal';
+import {color , fromColor , toColor} from '../../../../lib/color'
+
   export let data
-  const {pokeman} = data
 
-  const color = (type) => {
-    switch (type) {
-      case 'fire':
-        return 'red-600'
-      case 'grass':
-        return 'green-700'
-      case 'water':
-        return 'cyan-800'
-      case 'bug':
-        return 'lime-700'
-      case 'normal':
-        return 'rose-900'
-      case 'poison':
-        return 'fuchsia-900'
-      case 'electric':
-        return 'amber-500'
-      case 'ground':
-        return 'yellow-800'
-      case 'fairy':
-        return 'pink-600'
-      case 'fighting':
-        return 'red-900'
-      case 'psychic':
-        return 'rose-600'
-      case 'rock':
-        return 'amber-950'
-      case 'ice':
-        return 'cyan-500'
-      case 'ghost':
-        return 'violet-600'
-      case 'dragon':
-        return 'violet-900'
-      case 'dark':
-        return 'zinc-950'
-      case 'steel':
-        return 'slate-500'
-      case 'flying':
-        return 'blue-400'
-    }
+  const loadEvos = async(name) => {
+    const url = `https://pokeapi.co/api/v2/pokemon/${name}`
+    const res = await axios.get(url)
+    const evo = await res.data
+    return evo
   }
 
-  const fromColor = (type) => {
-    switch(type) {
-      case 'fire':
-        return 'from-red-600'
-      case 'grass':
-        return 'from-green-700'
-      case 'water':
-        return 'from-cyan-800'
-      case 'bug':
-        return 'from-lime-700'
-      case 'normal':
-        return 'from-rose-900'
-      case 'poison':
-        return 'from-fuchsia-900'
-      case 'electric':
-        return 'from-amber-500'
-      case 'ground':
-        return 'from-yellow-800'
-      case 'fairy':
-        return 'from-pink-600'
-      case 'fighting':
-        return 'from-red-900'
-      case 'psychic':
-        return 'from-rose-600'
-      case 'rock':
-        return 'from-amber-950'
-      case 'ice':
-        return 'from-cyan-500'
-      case 'ghost':
-        return 'from-violet-600'
-      case 'dragon':
-        return 'from-violet-900'
-      case 'dark':
-        return 'from-zinc-950'
-      case 'steel':
-        return 'from-slate-500'
-      case 'flying':
-        return 'from-blue-400'
-    }
+  let pokeman
+  let evolution
+  let spec
+  $:{
+    pokeman = data.pokeman
+    console.log(pokeman)
+    evolution = data.chain
+    console.log(evolution)
+    spec = data.specie
+    console.log(spec)
   }
 
-  const toColor = (type) => {
-    if (type != undefined){
-      switch(type) {
-        case 'fire':
-          return 'to-red-600'
-        case 'grass':
-          return 'to-green-700'
-        case 'water':
-          return 'to-cyan-800'
-        case 'bug':
-          return 'to-lime-700'
-        case 'normal':
-          return 'to-rose-900'
-        case 'poison':
-          return 'to-fuchsia-900'
-        case 'electric':
-          return 'to-amber-500'
-        case 'ground':
-          return 'to-yellow-800'
-        case 'fairy':
-          return 'to-pink-600'
-        case 'fighting':
-          return 'to-red-900'
-        case 'psychic':
-          return 'to-rose-600'
-        case 'rock':
-          return 'to-amber-950'
-        case 'ice':
-          return 'to-cyan-500'
-        case 'ghost':
-          return 'to-violet-600'
-        case 'dragon':
-          return 'to-violet-900'
-        case 'dark':
-          return 'to-zinc-950'
-        case 'steel':
-          return 'to-slate-500'
-        case 'flying':
-          return 'to-blue-400'
-      }
-    } else {
-      return ''
-    }
-  }
 </script>
 
-<section class="h-auto bg-cover bg-fixed mt-16 pb-16 flex justify-center">
-  <div class=" h-auto w-3/5 rounded-t-3xl flex flex-col items-center relative glass mt-52 pb-10 px-12 gap-y-6">
+<section class="flex flex-col h-auto bg-cover bg-fixed mt-16 pb-16 flex items-center">
+  <!-- POKEMON BASE INFO -->
+  <div class=" h-auto w-auto rounded-t-3xl flex flex-col items-center relative glass mt-52 pb-10 px-12 gap-y-6">
     <div class="absolute w-64 -top-48 z-10">
       <img src={pokeman.sprites.other['official-artwork'].front_default} alt="none"/>
     </div>
@@ -146,7 +43,7 @@
     </div>
     {/if}
 
-    <h1 class="text-4xl">
+    <h1 class="text-4xl capitalize">
       {pokeman.name}
     </h1>
 
@@ -184,7 +81,7 @@
       <h2 class="text-xl">Stats:</h2>
       <div class="w-full grid grid-cols-2 gap-x-10">
         {#each pokeman.stats as stat}
-          <div class="flex justify-between text-lg">
+          <div class="w-72 flex justify-between text-lg">
             <span>{stat.stat.name}:</span>
             <span>{stat.base_stat}</span>
           </div>
@@ -192,6 +89,61 @@
       </div>
     </div>
   </div>
+
+  <!-- POKEMON EVOLUTIONS -->
+  {#if evolution.chain.evolves_to.length != 0}
+    <div class="flex flex-row glass">
+      <div class="w-36 h-36 flex flex-col items-center justify-center">
+        <figure class="w-24 h-24">
+            {#await loadEvos(`${evolution.chain.species.name}`)}
+              <span>loading...</span>
+            {:then e}
+              <img src={e.sprites.other['official-artwork'].front_default} alt=""/>
+            {/await}
+        </figure>
+        <h3>
+          {evolution.chain.species.name}
+        </h3>
+      </div>
+      <div class="flex">
+        {#each evolution.chain.evolves_to as evo1}
+          <div class="w-36 h-36 flex flex-col items-center justify-center">
+            <figure class="w-24 h-24 flex items-center justify-center">
+              {#await loadEvos(`${evo1.species.name}`)}
+                <span>loading...</span>
+              {:then e}
+                <img src={e.sprites.other['official-artwork'].front_default} alt=""/>
+              {/await}
+            </figure>
+            <h3>{evo1.species.name}</h3>
+          </div>
+          {#if evo1.evolves_to.length != 0}
+            {#each evo1.evolves_to as evo2}
+              <div class="w-36 h-36 flex flex-col items-center justify-center">
+                <figure class="w-24 h-24 flex items-center justify-center">
+                  {#await loadEvos(`${evo2.species.name}`)}
+                    <span>loading...</span>
+                  {:then e}
+                   <img src={e.sprites.other['official-artwork'].front_default} alt=""/>
+                  {/await}
+                </figure>
+                <h3>{evo2.species.name}</h3>
+              </div>
+              {#if evo2.evolves_to.length != 0}
+                {#each evo2.evolves_to as evo3}
+                <p>evo3</p>
+                {/each}
+              {:else}
+                <p>No further evolution</p>
+              {/if}
+            {/each}
+          {/if}
+        {/each}
+      </div>
+    </div>
+  {:else}
+    <span>No evolution chain</span>
+  {/if}
 </section>
 
 <style>

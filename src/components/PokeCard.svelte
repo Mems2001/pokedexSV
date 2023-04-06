@@ -1,7 +1,12 @@
 <script>
   import axios from 'axios'
 
-  export let pokeman
+  export let pokemanB
+  let pokeman
+  $:{
+    pokeman = pokemanB
+    // console.log(pokeman)
+  }
 
   const loadPoke = async(url) => {
     try {
@@ -143,7 +148,7 @@
 </script>
 
 {#await loadPoke(pokeman.url)}
-  <a href="/pokedex" class={`card w-80 glass flex flex-col items-center`}>
+  <a href="/pokedex" class={`card w-80 pt-3 glass flex flex-col items-center`}>
     <div class="w-44 h-44 mt-4 mask mask-squircle glass flex items-center justify-center">
     </div>
     <div class="p-5 pt-0 flex flex-col gap-y-3 items-center">
@@ -185,7 +190,7 @@
     </div>
   </a>
 {:then pokeman2}
-<a href="/pokedex/pokemon/{pokeman.name}" class={`card w-80 glass flex flex-col items-center hover:text-black ${bgColor(`${pokeman2.types[0]?.type.name}`)} ${ringColor(`${pokeman2.types[1]?.type.name}`)}`}>
+<a href="/pokedex/pokemon/{pokeman2.name}" class={`card w-80 pt-3 glass flex flex-col items-center hover:text-black ${bgColor(`${pokeman2.types[0]?.type.name}`)} ${ringColor(`${pokeman2.types[1]?.type.name}`)}`}>
   <figure class="w-48">
       <img class="w-full" src={pokeman2.sprites.other['official-artwork'].front_default} alt={pokeman2.name}/>
   </figure>

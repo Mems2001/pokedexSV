@@ -4,7 +4,7 @@
 
   export let type
 
-  console.log(type)
+  // console.log(type)
 
   const typeIcon = (name) => {
     switch(name) {

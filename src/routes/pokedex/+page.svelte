@@ -3,9 +3,9 @@
 	import TypeCard from '../../components/TypeCard.svelte';
   import {pokeInfo} from '../../stores/pokedexStore'
 
-  $: {
-    console.log($pokeInfo)
-  }
+  // $: {
+  //   console.log($pokeInfo)
+  // }
 
   export let data
   const {types , regions , pokemon} = data
@@ -49,7 +49,7 @@
 
     <div class='flex flex-wrap gap-10 justify-evenly'>
       {#each pokemon as pokeman}
-        <PokeCard pokeman={pokeman}/>
+        <PokeCard pokemanB={pokeman}/>
       {/each}
     </div>
   </section>
