@@ -1,6 +1,12 @@
 <script>
+  import {user} from '../../stores/userStore'
 	
   export let data
+
+  const logOut = () => {
+    user.set('')
+    console.log('you are out')
+  }
   
 </script>
 
@@ -24,7 +30,11 @@
           <li><a>Submenu 2</a></li> -->
         </ul>
       </li>
-      <li><a href="/">Logout</a></li>
+      <li>
+        <form method="post" action="?/logout">
+          <button type="submit">Logout</button>
+        </form>
+      </li>
     </ul>
   </div>
 </nav>

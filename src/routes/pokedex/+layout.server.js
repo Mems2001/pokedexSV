@@ -23,7 +23,7 @@ export const load = async ({locals}) => {
 
   const loadUser = async() => {
     const res = await locals.user
-    console.log(res , 'layout')
+    // console.log(res , 'layout')
     return res
   }
 

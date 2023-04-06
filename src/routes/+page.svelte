@@ -46,7 +46,7 @@
     return async({result , update}) => {
       switch (result.type) {
         case 'redirect':
-          console.log(result.type)
+          // console.log(result.type)
           toast.success('Welcome trainer')
           // update()
           form.reset()
