@@ -143,48 +143,47 @@
 </script>
 
 {#await loadPoke(pokeman.url)}
-<a href="/pokedex" class={`card w-80 glass flex flex-col items-center`}>
-  <div class="w-44 h-44 mt-4 mask mask-squircle glass flex items-center justify-center">
-    <button class="btn btn-ghost loading"></button>
-  </div>
-  <div class="p-5 pt-0 flex flex-col gap-y-3 items-center">
-    <h2 class="card-title text-black">{pokeman.name}</h2>
-    <div class="card-actions flex justify-center">
-      
-        <span class="badge badge-lg glass w-16"></span>
-        <span class="badge badge-lg glass w-16"></span>
-      
+  <a href="/pokedex" class={`card w-80 glass flex flex-col items-center`}>
+    <div class="w-44 h-44 mt-4 mask mask-squircle glass flex items-center justify-center">
     </div>
-    <div class="grid grid-cols-2 gap-x-4">
+    <div class="p-5 pt-0 flex flex-col gap-y-3 items-center">
+      <h2 class="card-title text-black">{pokeman.name}</h2>
+      <div class="card-actions flex justify-center">
+        
+          <span class="badge badge-lg glass w-16"></span>
+          <span class="badge badge-lg glass w-16"></span>
+        
+      </div>
+      <div class="grid grid-cols-2 gap-x-4">
+        
+          <div class="flex justify-between gap-x-3 glass">
+            <span class="w-12 h-5"></span>
+            <span class="w-12 h-5"></span>
+          </div>
+          <div class="flex justify-between gap-x-3 glass">
+            <span class="w-12 h-5"></span>
+            <span class="w-12 h-5"></span>
+          </div>
+          <div class="flex justify-between gap-x-3 glass">
+            <span class="w-12 h-5"></span>
+            <span class="w-12 h-5"></span>
+          </div>
+          <div class="flex justify-between gap-x-3 glass">
+            <span class="w-12 h-5"></span>
+            <span class="w-12 h-5"></span>
+          </div>
+          <div class="flex justify-between gap-x-3 glass">
+            <span class="w-12 h-5"></span>
+            <span class="w-12 h-5"></span>
+          </div>
+          <div class="flex justify-between gap-x-3 glass">
+            <span class="w-12 h-5"></span>
+            <span class="w-12 h-5"></span>
+          </div>
       
-        <div class="flex justify-between gap-x-3 glass">
-          <span class="w-12 h-5"></span>
-          <span class="w-12 h-5"></span>
-        </div>
-        <div class="flex justify-between gap-x-3 glass">
-          <span class="w-12 h-5"></span>
-          <span class="w-12 h-5"></span>
-        </div>
-        <div class="flex justify-between gap-x-3 glass">
-          <span class="w-12 h-5"></span>
-          <span class="w-12 h-5"></span>
-        </div>
-        <div class="flex justify-between gap-x-3 glass">
-          <span class="w-12 h-5"></span>
-          <span class="w-12 h-5"></span>
-        </div>
-        <div class="flex justify-between gap-x-3 glass">
-          <span class="w-12 h-5"></span>
-          <span class="w-12 h-5"></span>
-        </div>
-        <div class="flex justify-between gap-x-3 glass">
-          <span class="w-12 h-5"></span>
-          <span class="w-12 h-5"></span>
-        </div>
-     
+      </div>
     </div>
-  </div>
-</a>
+  </a>
 {:then pokeman2}
 <a href="/pokedex/pokemon/{pokeman.name}" class={`card w-80 glass flex flex-col items-center hover:text-black ${bgColor(`${pokeman2.types[0]?.type.name}`)} ${ringColor(`${pokeman2.types[1]?.type.name}`)}`}>
   <figure class="w-48">
