@@ -1,4 +1,3 @@
-import { redirect } from "@sveltejs/kit"
 import axios from "axios"
 
 export const load = async ({locals}) => {

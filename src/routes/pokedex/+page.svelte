@@ -1,12 +1,19 @@
 <script>
   import PokeCard from '../../components/PokeCard.svelte'
+	import TypeCard from '../../components/TypeCard.svelte';
+  import {pokeInfo} from '../../stores/pokedexStore'
+
+  $: {
+    console.log($pokeInfo)
+  }
 
   export let data
   const {types , regions , pokemon} = data
   // console.log(types)
 </script>
 
-  <section class="flex flex-col justify-evenly h-auto w-auto pt-5 gap-y-5 bg-fixed bg-cover mt-16">
+{#if $pokeInfo === 'Pokémon'}
+  <section class="flex flex-col justify-evenly h-auto w-auto pt-5 gap-y-7 bg-fixed bg-cover mt-16 pb-16">
     <div class="h-auto w-auto">
       <div class="form-control flex flex-row justify-evenly">
     
@@ -39,13 +46,22 @@
     
       </div>
     </div>
-  
-    <div class='flex flex-wrap gap-5 justify-evenly'>
+
+    <div class='flex flex-wrap gap-10 justify-evenly'>
       {#each pokemon as pokeman}
         <PokeCard pokeman={pokeman}/>
       {/each}
     </div>
   </section>
+{:else if $pokeInfo === 'Types'}
+  <section class="flex flex-col items-center h-auto w-auto bg-fixed bg-cover pt-28">
+    <div class="flex flex-wrap gap-7 w-4/5 justify-evenly">
+      {#each types as type}
+        <TypeCard type={type} />
+      {/each}
+    </div>
+  </section>
+{/if}
 
 <style>
   section {

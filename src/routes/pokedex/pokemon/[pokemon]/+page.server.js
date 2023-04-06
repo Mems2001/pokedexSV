@@ -1,5 +1,5 @@
 import axios from "axios"
-import { user } from "../../../stores/userStore"
+import { user } from "../../../../stores/userStore"
 import { redirect } from "@sveltejs/kit"
 
 export const load = async({params}) => {

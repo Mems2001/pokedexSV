@@ -143,8 +143,10 @@
 </script>
 
 {#await loadPoke(pokeman.url)}
-<a href="/pokedex/{pokeman.name}" class={`card w-80 glass flex flex-col items-center`}>
-  <div class="w-44 h-44 mt-4 mask mask-squircle glass"></div>
+<a href="/pokedex" class={`card w-80 glass flex flex-col items-center`}>
+  <div class="w-44 h-44 mt-4 mask mask-squircle glass flex items-center justify-center">
+    <button class="btn btn-ghost loading"></button>
+  </div>
   <div class="p-5 pt-0 flex flex-col gap-y-3 items-center">
     <h2 class="card-title text-black">{pokeman.name}</h2>
     <div class="card-actions flex justify-center">
@@ -184,7 +186,7 @@
   </div>
 </a>
 {:then pokeman2}
-<a href="/pokedex/{pokeman.name}" class={`card w-80 glass flex flex-col items-center hover:text-black ${bgColor(`${pokeman2.types[0]?.type.name}`)} ${ringColor(`${pokeman2.types[1]?.type.name}`)}`}>
+<a href="/pokedex/pokemon/{pokeman.name}" class={`card w-80 glass flex flex-col items-center hover:text-black ${bgColor(`${pokeman2.types[0]?.type.name}`)} ${ringColor(`${pokeman2.types[1]?.type.name}`)}`}>
   <figure class="w-48">
       <img class="w-full" src={pokeman2.sprites.other['official-artwork'].front_default} alt={pokeman2.name}/>
   </figure>

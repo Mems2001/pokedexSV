@@ -166,7 +166,7 @@
         <h2 class="text-lg">Types:</h2>
         <div class="flex gap-x-5">
           {#each pokeman.types as type}
-            <span class="badge text-md h-10 px-6 bg-{color(type.type.name)}">{type.type.name}</span>
+            <a href="/pokedex/types/{type.type.name}" class="btn btn-ghost btn-sm h-10 px-5 rounded-full text-md uppercase bg-{color(type.type.name)}">{type.type.name}</a>
           {/each}
         </div>
       </div>
