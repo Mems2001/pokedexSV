@@ -1,11 +1,6 @@
 <script>
-	import { onDestroy, onMount } from 'svelte';
-  // export let data
-  // const {username} = data.user
-  
-  import {user} from '../../stores/userStore'
-  
-  // console.log($user)
+	
+  export let data
   
 </script>
 
@@ -15,7 +10,7 @@
       <img class="w-auto" alt="Pokédex" src='src/routes/pokedex/logo.png'/>
     </a>
   </div>
-  <p>Welcome {$user}!</p>
+  <p>Welcome {data.username}!</p>
   <div class="flex-none">
     <ul class="menu menu-horizontal px-1">
       <li><a href="/">Team</a></li>

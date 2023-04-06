@@ -1,5 +1,6 @@
 <script>
-	import { enhance } from "$app/forms";
+	import { enhance , applyAction } from "$app/forms";
+  import { invalidateAll } from '$app/navigation'
   import {z} from 'zod';
   import toast from 'svelte-french-toast';
 
@@ -42,11 +43,26 @@
       }
     }
 
+    return async({result , update}) => {
+      switch (result.type) {
+        case 'redirect':
+          console.log(result.type)
+          toast.success('Welcome trainer')
+          // update()
+          form.reset()
+          await invalidateAll()
+          await applyAction(result)
+          // redirect(303 , '/pokedex')
+          break
+        default: break
+      }
+    }
+
   }
 </script>
 
 <div class="flex flex-col items-center justify-evenly h-screen w-screen">
-  <h1 class="text-2xl">Please <a href="/register" class="btn btn-sm">register</a> or <a href="/" class="btn btn-sm">login</a> to continue</h1>
+  <h1 class="text-2xl">Please <a href="/register" class="btn btn-sm" disabled>register</a> or <a href="/" class="btn btn-sm">login</a> to continue</h1>
 
   <div class='dex-home flex flex-col relative'>
 
@@ -61,10 +77,10 @@
           <input type="text" name="username" placeholder="Type your username" 
           class='w-40 input input-ghost input-sm {errorUser ? 'input-error' : ''}' bind:value={trainerName}/>
         </label>
-        <!-- <label for="password">
-          <input type="password" name="password" placeholder="password" 
+        <label for="password">
+          <input type="password" name="password" placeholder="password" disabled
           class='w-40 input input-ghost input-sm {errorPass ? 'input-error' : ''}'/>
-        </label> -->
+        </label>
         <button type="submit" class="btn btn-sm btn-outline btn-error w-12" name="submit">Go!</button>
       </form>
     </div>

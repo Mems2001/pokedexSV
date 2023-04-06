@@ -1,6 +1,6 @@
 import axios from "axios"
 
-export const load = async () => {
+export const load = async ({locals}) => {
 
   const loadPokemon = async() => {
     const url = 'https://pokeapi.co/api/v2/pokemon?limit=48'
@@ -21,10 +21,15 @@ export const load = async () => {
     return res.data.results
   }
 
-  // if (locals.user) {
-    // console.log(locals.user)
+  const loadUser = async() => {
+    const res = await locals.user
+    console.log(res , 'layout')
+    return res
+  }
+
+  // if (loadUser() !== undefined) {
     return {
-      // user: locals.user,
+      username: loadUser(),
       pokemon: loadPokemon(),
       types: loadTypes(),
       regions: loadRegions()
@@ -32,6 +37,6 @@ export const load = async () => {
   // }
   
   // return {
-  //   user: undefined
+  //   user: 'Trainer'
   // }
 }
