@@ -1,11 +1,23 @@
 import axios from "axios"
 
-export const load = async ({locals}) => {
+export const load = async ({locals , url}) => {
 
-  const loadPokemon = async() => {
-    const url = 'https://pokeapi.co/api/v2/pokemon?limit=48'
+  const loadPokemon = async(dir) => {
+    const limit = parseInt(dir.searchParams.get('limit')) || 24
+    const offset = parseInt(dir.searchParams.get('offset')) || 0
+    
+    // const url = `https://pokeapi.co/api/v2/pokemon`
+    const url = `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`
+    console.log(url)
     const res = await axios.get(url)
-    return res.data.results
+    return {
+      pokemon: res.data.results,
+      total: {
+        count: res.data.count,
+        limit,
+        offset
+      }
+    }
   }
 
   const loadTypes = async() => {
@@ -30,7 +42,7 @@ export const load = async ({locals}) => {
   // if (loadUser() !== undefined) {
     return {
       username: loadUser(),
-      pokemon: loadPokemon(),
+      pokemon: loadPokemon(url),
       types: loadTypes(),
       regions: loadRegions()
     }

@@ -112,16 +112,16 @@
 
   <!-- RELATED POKEMON -->
   <div class="card w-4/5 glass flex flex-col flex-wrap p-10 gap-y-10 items-center">
-    <h1 class="text-black text-xl">Pokémon related:</h1>
+    <h1 class="text-black text-xl">Related pokémon:</h1>
     <div class="flex flex-wrap gap-5 justify-evenly">
       {#each type?.pokemon as poke}
         {#await loadPoke(`${poke.pokemon.name}`)}
-          <span class="card glass w-44 h-56 flex justify-center items-center">
+          <span class="card glass w-44 h-64 flex justify-center items-center">
             <p class="text-black">Loading...</p>
           </span>
         {:then pokeman}
           <a href="/pokedex/pokemon/{pokeman.name}" 
-          class="x card w-44 h-56 flex flex-col glass items-center justify-evenly p-4 {bgColor(`${pokeman.types[0]?.type.name}`)} {ringColor(`${pokeman.types[1]?.type.name}`)}">
+          class="x card w-44 h-64 flex flex-col glass items-center justify-evenly p-4 {bgColor(`${pokeman.types[0]?.type.name}`)} {ringColor(`${pokeman.types[1]?.type.name}`)}">
             <h2 class="text-black capitalize text-center">{poke.pokemon.name}</h2>
             <div>
                   <figure class="w-24">

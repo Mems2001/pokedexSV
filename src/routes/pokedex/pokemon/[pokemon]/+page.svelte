@@ -1,7 +1,7 @@
 <script>
 	import axios from 'axios';
-  import { each } from 'svelte/internal';
-import {color , fromColor , toColor} from '../../../../lib/color'
+  import {bgColor, color , fromColor , toColor} from '../../../../lib/color'
+  import {handleEvolutions} from '../../../../lib/utils'
 
   export let data
 
@@ -15,18 +15,24 @@ import {color , fromColor , toColor} from '../../../../lib/color'
   let pokeman
   let evolution
   let spec
+  let evos
   $:{
     pokeman = data.pokeman
-    console.log(pokeman)
+    // console.log(pokeman)
     evolution = data.chain
-    console.log(evolution)
+    // console.log(evolution)
     spec = data.specie
-    console.log(spec)
+    // console.log(spec)
+    
+    if (evolution){
+      evos = handleEvolutions(evolution.chain)
+    }
   }
+
 
 </script>
 
-<section class="flex flex-col h-auto bg-cover bg-fixed mt-16 pb-16 flex items-center">
+<section class="flex flex-col h-auto bg-cover bg-fixed mt-16 pb-16 flex items-center gap-y-10">
   <!-- POKEMON BASE INFO -->
   <div class=" h-auto w-auto rounded-t-3xl flex flex-col items-center relative glass mt-52 pb-10 px-12 gap-y-6">
     <div class="absolute w-64 -top-48 z-10">
@@ -91,58 +97,38 @@ import {color , fromColor , toColor} from '../../../../lib/color'
   </div>
 
   <!-- POKEMON EVOLUTIONS -->
-  {#if evolution.chain.evolves_to.length != 0}
-    <div class="flex flex-row glass">
-      <div class="w-36 h-36 flex flex-col items-center justify-center">
-        <figure class="w-24 h-24">
-            {#await loadEvos(`${evolution.chain.species.name}`)}
-              <span>loading...</span>
-            {:then e}
-              <img src={e.sprites.other['official-artwork'].front_default} alt=""/>
-            {/await}
-        </figure>
-        <h3>
-          {evolution.chain.species.name}
-        </h3>
+  {#if evolution}
+    {#if evolution.chain.evolves_to.length != 0}
+      <div class="flex items-center gap-x-10">
+        {#await evos}
+          <p>Waiting evolutions...</p>
+        {:then evos2}
+          {#each evos2 as e}
+            <div class="flex flex-col gap-y-5">
+              {#each e as f}
+              <a href="/pokedex/pokemon/{f.name}" class="w-52 h-52 flex flex-col glass rounded-full justify-center items-center gap-y-2">
+                {#await loadEvos(f.name)}
+                <p>Loading {f.name}...</p>
+                {:then x}
+                  <h3 class="capitalize">{f.name}</h3>  
+                    <figure class="w-20">
+                      <img src={x.sprites.other['official-artwork'].front_default} alt=""/>
+                    </figure>
+                    {#each x.types as type}
+                      <span class="badge badge-md rounded-full text-black {bgColor(type.type.name)}">{type.type.name}</span>
+                    {/each}
+                {/await}
+                </a>
+              {/each}
+            </div>
+          {/each}
+        {/await}
       </div>
-      <div class="flex">
-        {#each evolution.chain.evolves_to as evo1}
-          <div class="w-36 h-36 flex flex-col items-center justify-center">
-            <figure class="w-24 h-24 flex items-center justify-center">
-              {#await loadEvos(`${evo1.species.name}`)}
-                <span>loading...</span>
-              {:then e}
-                <img src={e.sprites.other['official-artwork'].front_default} alt=""/>
-              {/await}
-            </figure>
-            <h3>{evo1.species.name}</h3>
-          </div>
-          {#if evo1.evolves_to.length != 0}
-            {#each evo1.evolves_to as evo2}
-              <div class="w-36 h-36 flex flex-col items-center justify-center">
-                <figure class="w-24 h-24 flex items-center justify-center">
-                  {#await loadEvos(`${evo2.species.name}`)}
-                    <span>loading...</span>
-                  {:then e}
-                   <img src={e.sprites.other['official-artwork'].front_default} alt=""/>
-                  {/await}
-                </figure>
-                <h3>{evo2.species.name}</h3>
-              </div>
-              {#if evo2.evolves_to.length != 0}
-                {#each evo2.evolves_to as evo3}
-                <p>evo3</p>
-                {/each}
-              {:else}
-                <p>No further evolution</p>
-              {/if}
-            {/each}
-          {/if}
-        {/each}
-      </div>
-    </div>
+    {:else}
+      <span class="text-xl">This pokémon does not evolves</span>
+    {/if}
   {:else}
-    <span>No evolution chain</span>
+    <span class="text-xl">This pokémon does not evolves</span>
   {/if}
 </section>
 

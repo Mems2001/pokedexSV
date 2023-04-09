@@ -1,5 +1,6 @@
 <script>
-  import PokeCard from '../../components/PokeCard.svelte'
+  import Pagination from '../../components/Pagination.svelte';
+import PokeCard from '../../components/PokeCard.svelte'
 	import TypeCard from '../../components/TypeCard.svelte';
   import {pokeInfo} from '../../stores/pokedexStore'
 
@@ -8,13 +9,34 @@
   // }
 
   export let data
-  const {types , regions , pokemon} = data
-  // console.log(types)
+  let pokemon
+  let types
+  let regions
+  $: {
+    pokemon = data.pokemon
+    types = data.types
+    regions = data.regions
+
+    console.log(pokemon)
+  }
+
+  let totalPoke
+  let totalPages
+  let curretPage = 1
+  $:{
+    totalPoke = pokemon.total.count
+    // console.log(pages)
+    totalPages = Math.ceil(totalPoke/pokemon.total.limit)
+    // console.log(totalPages)
+    curretPage = Math.ceil((pokemon.total.offset/pokemon.total.limit)+1)
+    console.log(`Curret page is ${curretPage}`)
+  } 
 </script>
 
 {#if $pokeInfo === 'Pokémon'}
-  <section class="flex flex-col justify-evenly h-auto w-auto pt-5 gap-y-7 bg-fixed bg-cover mt-16 pb-16">
-    <div class="h-auto w-auto">
+  <section class="flex flex-col justify-evenly items-center h-auto w-auto pt-5 gap-y-7 bg-fixed bg-cover mt-16 pb-16">
+    
+    <div class="h-auto w-full">
       <div class="form-control flex flex-row justify-evenly">
     
         <div class="input-group w-auto">
@@ -46,12 +68,14 @@
     
       </div>
     </div>
-
+    
     <div class='flex flex-wrap gap-10 justify-evenly'>
-      {#each pokemon as pokeman}
+      {#each pokemon.pokemon as pokeman}
         <PokeCard pokemanB={pokeman}/>
       {/each}
     </div>
+
+    <Pagination totalPages={totalPages} limit={pokemon.total.limit} currentPage={curretPage}/>
   </section>
 {:else if $pokeInfo === 'Types'}
   <section class="flex flex-col items-center h-auto w-auto bg-fixed bg-cover pt-28">

@@ -12,23 +12,38 @@ export const load = async({params}) => {
     return poke
   }
 
-  const getSpecie = async(id) => {
-    const url = `https://pokeapi.co/api/v2/pokemon-species/${id}`
-    const res = await axios.get(url)
-    const specie = await res.data
-    return specie
+  
+  const getSpecie = async(pokemon) => {
+    try {
+      const forId = await pokemanLoad(`https://pokeapi.co/api/v2/pokemon/${pokemon}`)
+      const res = await axios.get(forId.species.url)
+      const specie = await res.data
+      return specie
+    } catch (err) {
+      // console.log(err)
+      return undefined
+    }
+    
   }
 
-  const spec = await getSpecie(params.pokemon)
-  const chain = await spec.evolution_chain.url
+  const spec = await getSpecie(params.pokemon) 
+  let chain
+  if (spec) {
+     chain = await spec.evolution_chain?.url
+  } else {
+    chain = undefined
+  }
 
   const evolutionChain = async(url) => {
-    const res = await axios.get(url)
-    const chain = await res.data
-    if (chain) {
+    try {
+      const res = await axios.get(url)
+      const chain = await res.data
+
       return chain
+    } catch (err) {
+      // console.log(err)
+      return undefined
     }
-    return undefined
   }
 
   return {
