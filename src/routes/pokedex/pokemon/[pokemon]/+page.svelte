@@ -1,7 +1,7 @@
 <script>
 	import axios from 'axios';
   import {bgColor, color , fromColor , toColor} from '../../../../lib/color'
-  import {handleEvolutions} from '../../../../lib/utils'
+  import {handleEvolutions, handleVersions} from '../../../../lib/utils'
 
   export let data
 
@@ -12,13 +12,19 @@
     return evo
   }
 
+  const loadMove = async(url) => {
+    const res = await axios.get(url)
+    const move = await res.data
+    return move
+  }
+
   let pokeman
   let evolution
   let spec
   let evos
   $:{
     pokeman = data.pokeman
-    // console.log(pokeman)
+    console.log(pokeman)
     evolution = data.chain
     // console.log(evolution)
     spec = data.specie
@@ -27,6 +33,8 @@
     if (evolution){
       evos = handleEvolutions(evolution.chain)
     }
+
+    console.log(handleVersions(pokeman.moves))
   }
 
 
@@ -99,6 +107,7 @@
   <!-- POKEMON EVOLUTIONS -->
   {#if evolution}
     {#if evolution.chain.evolves_to.length != 0}
+      <h2 class="text-xl"><b>Evolution chain:</b></h2>
       <div class="flex items-center gap-x-10">
         {#await evos}
           <p>Waiting evolutions...</p>
@@ -130,6 +139,59 @@
   {:else}
     <span class="text-xl">This pokémon does not evolves</span>
   {/if}
+
+  <!-- MOVEMENTS -->
+  <div class="flex flex-row flex-wrap justify-center w-full py-2 gap-2">
+    {#await handleVersions(pokeman.moves)}
+    {:then versions}
+      {#each versions as version}
+        <a href={`#item${version.number}`} class="btn btn-xs">{version.name}</a>
+      {/each}
+    {/await}
+  </div>
+
+  <div class="carousel w-full">
+    {#await handleVersions(pokeman.moves)}
+    {:then versions}
+      {#each versions as version}
+        <div id={`item${version.number}`} class="carousel-item w-full">
+          
+            <div class='overflow-x-auto flex justify-center w-full'>
+              <table class="table table-compact w-auto">
+                <thead>
+                  <tr>
+                    <th>Level</th>
+                    <th>Name</th>
+                    <th>Accuracy</th>
+                    <th>Power</th>
+                    <th>Damage class</th>
+                    <th>Type</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {#each version.content as move}
+                    {#await loadMove(move.move.move.url)}
+                      <!-- <tr>Loading...</tr> -->
+                    {:then move2}
+                      <tr>
+                        <th>{move.level}</th>
+                        <td>{move2.name}</td>
+                        <td>{move2.accuracy ?? ''}</td>
+                        <td>{move2.power ?? ''}</td>
+                        <td>{move2.damage_class.name ?? ''}</td>
+                        <td><span class='badge {bgColor(move2.type.name)}'>{move2.type.name ?? ''}</span></td>
+                      </tr>
+                    {/await}
+                  {/each}
+                </tbody>
+              </table>
+            </div>
+          
+        </div>
+      {/each}
+    {/await}
+
+  </div> 
 </section>
 
 <style>
