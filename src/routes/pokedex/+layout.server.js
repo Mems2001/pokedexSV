@@ -39,16 +39,16 @@ export const load = async ({locals , url}) => {
     return res
   }
 
-  // if (loadUser() !== undefined) {
+  if (loadUser() !== undefined) {
     return {
       username: loadUser(),
       pokemon: loadPokemon(url),
       types: loadTypes(),
       regions: loadRegions()
     }
-  // }
+  }
   
-  // return {
-  //   user: 'Trainer'
-  // }
+  return {
+    user: undefined
+  }
 }

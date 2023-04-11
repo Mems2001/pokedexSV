@@ -1,8 +1,9 @@
 <script>
   import Pagination from '../../components/Pagination.svelte';
-import PokeCard from '../../components/PokeCard.svelte'
+  import PokeCard from '../../components/PokeCard.svelte'
 	import TypeCard from '../../components/TypeCard.svelte';
-  import {pokeInfo} from '../../stores/pokedexStore'
+  import {pokeInfo} from '../../stores/pokedexStore';
+  import {searchTerm , searchedPokes , newStore} from '../../stores/searchStore';
 
   // $: {
   //   console.log($pokeInfo)
@@ -18,19 +19,26 @@ import PokeCard from '../../components/PokeCard.svelte'
     regions = data.regions
 
     console.log(pokemon)
+    console.log(regions)
   }
 
   let totalPoke
   let totalPages
   let curretPage = 1
+
   $:{
     totalPoke = pokemon.total.count
     // console.log(pages)
     totalPages = Math.ceil(totalPoke/pokemon.total.limit)
     // console.log(totalPages)
     curretPage = Math.ceil((pokemon.total.offset/pokemon.total.limit)+1)
-    console.log(`Curret page is ${curretPage}`)
-  } 
+    // console.log(`Curret page is ${curretPage}`)
+  }
+
+  // SEARCHBAR
+  $: console.log($searchedPokes)
+  $: newStore($searchTerm)
+
 </script>
 
 {#if $pokeInfo === 'Pokémon'}
@@ -40,11 +48,13 @@ import PokeCard from '../../components/PokeCard.svelte'
       <div class="form-control flex flex-row justify-evenly">
     
         <div class="input-group w-auto">
-          <input type="text" placeholder="Pokémon's name…" class="input input-bordered bg-transparent" />
+          <input type="text" placeholder="Pokémon's name…" class="input input-bordered bg-transparent" bind:value={$searchTerm}/>
           <button class="btn btn-square glass">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
           </button>
         </div>
+
+        <p>{$searchTerm}</p>
     
         <!-- <div class="input-group w-auto"> -->
           <select class="select select-bordered w-auto max-w-xs glass">
@@ -69,11 +79,19 @@ import PokeCard from '../../components/PokeCard.svelte'
       </div>
     </div>
     
-    <div class='flex flex-wrap gap-10 justify-evenly'>
-      {#each pokemon.pokemon as pokeman}
-        <PokeCard pokemanB={pokeman}/>
-      {/each}
-    </div>
+    {#if $searchTerm != ''}
+      <div class='flex flex-wrap gap-10 justify-evenly'>
+        {#each $searchedPokes as pokeman}
+          <PokeCard pokemanB={pokeman}/>
+        {/each}
+      </div>
+    {:else}
+      <div class='flex flex-wrap gap-10 justify-evenly'>
+        {#each pokemon.pokemon as pokeman}
+          <PokeCard pokemanB={pokeman}/>
+        {/each}
+      </div>
+    {/if}
 
     <Pagination totalPages={totalPages} limit={pokemon.total.limit} currentPage={curretPage}/>
   </section>

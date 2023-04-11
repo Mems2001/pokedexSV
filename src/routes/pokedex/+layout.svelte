@@ -24,10 +24,10 @@
       <li><a href="/pokedex">Team</a></li>
       <li>
         <form>
-          <select bind:value={info}>
-            <option>Pokémon</option>
-            <option>Types</option>
-            <option>Regions</option>
+          <select class="bg-transparent" bind:value={info}>
+            <option class="bg-black">Pokémon</option>
+            <option class="bg-black">Types</option>
+            <option class="bg-black">Regions</option>
           </select>
         </form>
       </li>

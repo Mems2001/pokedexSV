@@ -141,57 +141,60 @@
   {/if}
 
   <!-- MOVEMENTS -->
-  <div class="flex flex-row flex-wrap justify-center w-full py-2 gap-2">
-    {#await handleVersions(pokeman.moves)}
-    {:then versions}
-      {#each versions as version}
-        <a href={`#item${version.number}`} class="btn btn-xs">{version.name}</a>
-      {/each}
-    {/await}
+  <div class="glass flex flex-col items-center movements">
+    <h2 class="text-xl"><b>Movements:</b></h2>
+    <div class="flex flex-row flex-wrap justify-center w-full py-2 gap-2">
+      {#await handleVersions(pokeman.moves)}
+      {:then versions}
+        {#each versions as version}
+          <a href={`#item${version.number}`} class="btn btn-xs">{version.name}</a>
+        {/each}
+      {/await}
+    </div>
+  
+    <div class="carousel w-full">
+      {#await handleVersions(pokeman.moves)}
+      {:then versions}
+        {#each versions as version}
+          <div id={`item${version.number}`} class="carousel-item w-full">
+            
+              <div class='overflow-x-auto flex justify-center w-full'>
+                <table class="table table-compact w-auto">
+                  <thead>
+                    <tr>
+                      <th>Level</th>
+                      <th>Name</th>
+                      <th>Accuracy</th>
+                      <th>Power</th>
+                      <th>Damage class</th>
+                      <th>Type</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {#each version.content as move}
+                      {#await loadMove(move.move.move.url)}
+                        <!-- <tr>Loading...</tr> -->
+                      {:then move2}
+                        <tr>
+                          <th>{move.level}</th>
+                          <td>{move2.name}</td>
+                          <td>{move2.accuracy ?? ''}</td>
+                          <td>{move2.power ?? ''}</td>
+                          <td>{move2.damage_class.name ?? ''}</td>
+                          <td><span class='badge {bgColor(move2.type.name)}'>{move2.type.name ?? ''}</span></td>
+                        </tr>
+                      {/await}
+                    {/each}
+                  </tbody>
+                </table>
+              </div>
+            
+          </div>
+        {/each}
+      {/await}
+  
+    </div> 
   </div>
-
-  <div class="carousel w-full">
-    {#await handleVersions(pokeman.moves)}
-    {:then versions}
-      {#each versions as version}
-        <div id={`item${version.number}`} class="carousel-item w-full">
-          
-            <div class='overflow-x-auto flex justify-center w-full'>
-              <table class="table table-compact w-auto">
-                <thead>
-                  <tr>
-                    <th>Level</th>
-                    <th>Name</th>
-                    <th>Accuracy</th>
-                    <th>Power</th>
-                    <th>Damage class</th>
-                    <th>Type</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {#each version.content as move}
-                    {#await loadMove(move.move.move.url)}
-                      <!-- <tr>Loading...</tr> -->
-                    {:then move2}
-                      <tr>
-                        <th>{move.level}</th>
-                        <td>{move2.name}</td>
-                        <td>{move2.accuracy ?? ''}</td>
-                        <td>{move2.power ?? ''}</td>
-                        <td>{move2.damage_class.name ?? ''}</td>
-                        <td><span class='badge {bgColor(move2.type.name)}'>{move2.type.name ?? ''}</span></td>
-                      </tr>
-                    {/await}
-                  {/each}
-                </tbody>
-              </table>
-            </div>
-          
-        </div>
-      {/each}
-    {/await}
-
-  </div> 
 </section>
 
 <style>
@@ -203,5 +206,9 @@
     background-color: black;
     border-radius: 50%;
     opacity: 50%;
+  }
+
+  .movements {
+    width: 794px
   }
 </style>
