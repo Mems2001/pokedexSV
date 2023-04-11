@@ -3,7 +3,8 @@
   import PokeCard from '../../components/PokeCard.svelte'
 	import TypeCard from '../../components/TypeCard.svelte';
   import {pokeInfo} from '../../stores/pokedexStore';
-  import {searchTerm , searchedPokes , newStore} from '../../stores/searchStore';
+  import {searchedPokes , newStore} from '../../stores/searchStore';
+  import {enhance} from '$app/forms'
 
   // $: {
   //   console.log($pokeInfo)
@@ -18,8 +19,8 @@
     types = data.types
     regions = data.regions
 
-    console.log(pokemon)
-    console.log(regions)
+    // console.log(pokemon)
+    // console.log(regions)
   }
 
   let totalPoke
@@ -36,9 +37,14 @@
   }
 
   // SEARCHBAR
+  
+  const handleSearch = ({data , cancel}) => {
+    const searched = Object.fromEntries(data)
+    newStore(searched.searchTerm)
+    cancel()
+  }
   $: console.log($searchedPokes)
-  $: newStore($searchTerm)
-
+  
 </script>
 
 {#if $pokeInfo === 'Pokémon'}
@@ -47,14 +53,12 @@
     <div class="h-auto w-full">
       <div class="form-control flex flex-row justify-evenly">
     
-        <div class="input-group w-auto">
-          <input type="text" placeholder="Pokémon's name…" class="input input-bordered bg-transparent" bind:value={$searchTerm}/>
-          <button class="btn btn-square glass">
+        <form method="post" action="?/setSearch" class="input-group w-auto" use:enhance={handleSearch}>
+          <input type="text" placeholder="Pokémon's name…" name='searchTerm' class="input input-bordered bg-transparent">
+          <button type="submit" class="btn btn-square glass">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
           </button>
-        </div>
-
-        <p>{$searchTerm}</p>
+        </form>
     
         <!-- <div class="input-group w-auto"> -->
           <select class="select select-bordered w-auto max-w-xs glass">
@@ -79,7 +83,7 @@
       </div>
     </div>
     
-    {#if $searchTerm != ''}
+    {#if $searchedPokes.length != 0}
       <div class='flex flex-wrap gap-10 justify-evenly'>
         {#each $searchedPokes as pokeman}
           <PokeCard pokemanB={pokeman}/>
