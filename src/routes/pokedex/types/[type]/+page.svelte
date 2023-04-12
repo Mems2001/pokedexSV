@@ -111,7 +111,7 @@
   </div>
 
   <!-- RELATED POKEMON -->
-  <div class="card w-4/5 glass flex flex-col flex-wrap p-10 gap-y-10 items-center">
+  <div class="y card glass flex flex-col flex-wrap p-10 gap-y-10 items-center">
     <h1 class="text-black text-xl">Related pokémon:</h1>
     <div class="flex flex-wrap gap-5 justify-evenly">
       {#each type?.pokemon as poke}
@@ -149,5 +149,9 @@
 
   .x {
     transition: all 0.25s ease;
+  }
+
+  .y {
+    width: 748px;
   }
 </style>

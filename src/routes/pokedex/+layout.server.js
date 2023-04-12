@@ -8,7 +8,7 @@ export const load = async ({locals , url}) => {
     
     // const url = `https://pokeapi.co/api/v2/pokemon`
     const url = `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`
-    console.log(url)
+    // console.log(url)
     const res = await axios.get(url)
     return {
       pokemon: res.data.results,

@@ -3,7 +3,7 @@
   import PokeCard from '../../components/PokeCard.svelte'
 	import TypeCard from '../../components/TypeCard.svelte';
   import {pokeInfo} from '../../stores/pokedexStore';
-  import {searchedPokes , newStore} from '../../stores/searchStore';
+  import {searchedPokes , newStore , searchTerm} from '../../stores/searchStore';
   import {enhance} from '$app/forms'
 
   // $: {
@@ -40,10 +40,11 @@
   
   const handleSearch = ({data , cancel}) => {
     const searched = Object.fromEntries(data)
+    searchTerm.set(searched.searchTerm)
     newStore(searched.searchTerm)
     cancel()
   }
-  $: console.log($searchedPokes)
+  // $: console.log($searchedPokes)
   
 </script>
 
@@ -83,7 +84,7 @@
       </div>
     </div>
     
-    {#if $searchedPokes.length != 0}
+    {#if $searchedPokes.length != 0 && $searchTerm != ''}
       <div class='flex flex-wrap gap-10 justify-evenly'>
         {#each $searchedPokes as pokeman}
           <PokeCard pokemanB={pokeman}/>

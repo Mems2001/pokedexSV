@@ -4,7 +4,7 @@ import { redirect } from "@sveltejs/kit"
 
 export const load = async({params}) => {
 
-  const url = `https://pokeapi.co/api/v2/pokemon/${params.pokemon}`
+  const url2 = `https://pokeapi.co/api/v2/pokemon/${params.pokemon}`
 
   const pokemanLoad = async(url) => {
     const res = await axios.get(url)
@@ -47,9 +47,9 @@ export const load = async({params}) => {
   }
 
   return {
-    pokeman: pokemanLoad(url),
+    pokeman: pokemanLoad(url2),
     specie: getSpecie(params.pokemon),
-    chain: evolutionChain(chain),
+    chain: evolutionChain(chain)
   }
 }
 

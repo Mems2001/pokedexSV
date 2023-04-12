@@ -1,7 +1,7 @@
 import axios from "axios";
 import { writable } from "svelte/store";
 
-// export const searchTerm = writable('')
+export const searchTerm = writable('')
 export const searchedPokes = writable([])
 let allPokes = []
 
@@ -15,11 +15,12 @@ export const newStore = async(term) => {
   const newSearch = await allPokes.filter(poke => poke.name.toLowerCase().includes(term.toLowerCase()))
   try {
     searchedPokes.set(newSearch)
-    console.log(newSearch)
-    let data
-    searchedPokes.subscribe(value => data = value)
-    console.log(data)
+    // console.log(newSearch)
+    // let data
+    // searchedPokes.subscribe(value => data = value)
+    // console.log(data)
   } catch (err) {
     console.log(err)
+    throw err
   }
 }

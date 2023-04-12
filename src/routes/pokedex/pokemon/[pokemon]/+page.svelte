@@ -1,7 +1,8 @@
 <script>
 	import axios from 'axios';
   import {bgColor, color , fromColor , toColor} from '../../../../lib/color'
-  import {handleEvolutions, handleVersions} from '../../../../lib/utils'
+  import {handleEvolutions, handleVersions } from '../../../../lib/utils'
+  import {page} from '$app/stores'
 
   export let data
 
@@ -29,14 +30,15 @@
     // console.log(evolution)
     spec = data.specie
     // console.log(spec)
-    
+        
     if (evolution){
       evos = handleEvolutions(evolution.chain)
     }
 
     console.log(handleVersions(pokeman.moves))
-  }
 
+  }
+  // console.log($page.url.hash)
 
 </script>
 
@@ -141,13 +143,13 @@
   {/if}
 
   <!-- MOVEMENTS -->
-  <div class="glass flex flex-col items-center movements">
+  <div class="glass flex flex-col items-center movements gap-y-5 pt-5">
     <h2 class="text-xl"><b>Movements:</b></h2>
     <div class="flex flex-row flex-wrap justify-center w-full py-2 gap-2">
       {#await handleVersions(pokeman.moves)}
       {:then versions}
         {#each versions as version}
-          <a href={`#item${version.number}`} class="btn btn-xs">{version.name}</a>
+          <a href={`#item-${version.name}`} class="btn btn-xs {$page.url.hash === `#item-${version.name}` ? 'bg-black' : ''}">{version.name}</a>
         {/each}
       {/await}
     </div>
@@ -156,8 +158,10 @@
       {#await handleVersions(pokeman.moves)}
       {:then versions}
         {#each versions as version}
-          <div id={`item${version.number}`} class="carousel-item w-full">
-            
+          <div id={`item-${version.name}`} class="carousel-item w-full flex flex-col pb-5 gap-y-3">
+
+            <div class="flex flex-col w-full items-center gap-y-3">
+              <h2><b>Learned by leveling:</b></h2>
               <div class='overflow-x-auto flex justify-center w-full'>
                 <table class="table table-compact w-auto">
                   <thead>
@@ -171,23 +175,162 @@
                     </tr>
                   </thead>
                   <tbody>
-                    {#each version.content as move}
-                      {#await loadMove(move.move.move.url)}
-                        <!-- <tr>Loading...</tr> -->
-                      {:then move2}
-                        <tr>
-                          <th>{move.level}</th>
-                          <td>{move2.name}</td>
-                          <td>{move2.accuracy ?? ''}</td>
-                          <td>{move2.power ?? ''}</td>
-                          <td>{move2.damage_class.name ?? ''}</td>
-                          <td><span class='badge {bgColor(move2.type.name)}'>{move2.type.name ?? ''}</span></td>
-                        </tr>
-                      {/await}
-                    {/each}
+                    {#if $page.url.hash == `#item-${version.name}`}
+                      {#each version.content.level as move}
+                        {#await loadMove(move.move.move.url)}
+                          <tr>
+                            <th>?</th>
+                            <td>Loading...</td>
+                            <td>?</td>
+                            <td>?</td>
+                            <td>?</td>
+                            <td>?</td>
+                          </tr>
+                        {:then move2}
+                          <tr>
+                            <th>{move.level}</th>
+                            <td>{move2.name}</td>
+                            <td>{move2.accuracy ?? ''}</td>
+                            <td>{move2.power ?? ''}</td>
+                            <td>{move2.damage_class.name ?? ''}</td>
+                            <td class="flex justify-center"><a href="/pokedex/types/{move2.type.name}" class='badge {bgColor(move2.type.name)}'>{move2.type.name ?? ''}</a></td>
+                          </tr>
+                        {/await}
+                      {/each}
+                    {/if}
                   </tbody>
                 </table>
               </div>
+            </div>
+
+            <div class="flex flex-col w-full items-center gap-y-3">
+              <h2><b>Learned by machine:</b></h2>
+              <div class='overflow-x-auto flex justify-center w-full'>
+                <table class="table table-compact w-auto">
+                  <thead>
+                    <tr>
+                      <th>Level</th>
+                      <th>Name</th>
+                      <th>Accuracy</th>
+                      <th>Power</th>
+                      <th>Damage class</th>
+                      <th>Type</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {#if $page.url.hash == `#item-${version.name}`}
+                      {#each version.content.machine as move}
+                        {#await loadMove(move.move.move.url)}
+                          <tr>
+                            <th>?</th>
+                            <td>Loading...</td>
+                            <td>?</td>
+                            <td>?</td>
+                            <td>?</td>
+                            <td>?</td>
+                          </tr>
+                        {:then move2}
+                          <tr>
+                            <th>{move.level}</th>
+                            <td>{move2.name}</td>
+                            <td>{move2.accuracy ?? ''}</td>
+                            <td>{move2.power ?? ''}</td>
+                            <td>{move2.damage_class.name ?? ''}</td>
+                            <td class="flex justify-center"><a href="/pokedex/types/{move2.type.name}" class='badge {bgColor(move2.type.name)}'>{move2.type.name ?? ''}</a></td>
+                          </tr>
+                        {/await}
+                      {/each}
+                    {/if}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="flex flex-col w-full items-center gap-y-3">
+              <h2><b>Learned by breeding:</b></h2>
+              <div class='overflow-x-auto flex justify-center w-full'>
+                <table class="table table-compact w-auto">
+                  <thead>
+                    <tr>
+                      <th>Level</th>
+                      <th>Name</th>
+                      <th>Accuracy</th>
+                      <th>Power</th>
+                      <th>Damage class</th>
+                      <th>Type</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {#if $page.url.hash == `#item-${version.name}`}
+                      {#each version.content.egg as move}
+                        {#await loadMove(move.move.move.url)}
+                          <tr>
+                            <th>?</th>
+                            <td>Loading...</td>
+                            <td>?</td>
+                            <td>?</td>
+                            <td>?</td>
+                            <td>?</td>
+                          </tr>
+                        {:then move2}
+                          <tr>
+                            <th>{move.level}</th>
+                            <td>{move2.name}</td>
+                            <td>{move2.accuracy ?? ''}</td>
+                            <td>{move2.power ?? ''}</td>
+                            <td>{move2.damage_class.name ?? ''}</td>
+                            <td class="flex justify-center"><a href="/pokedex/types/{move2.type.name}" class='badge {bgColor(move2.type.name)}'>{move2.type.name ?? ''}</a></td>
+                          </tr>
+                        {/await}
+                      {/each}
+                    {/if}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="flex flex-col w-full items-center gap-y-3">
+              <h2><b>Learned by tutor:</b></h2>
+              <div class='overflow-x-auto flex justify-center w-full'>
+                <table class="table table-compact w-auto">
+                  <thead>
+                    <tr>
+                      <th>Level</th>
+                      <th>Name</th>
+                      <th>Accuracy</th>
+                      <th>Power</th>
+                      <th>Damage class</th>
+                      <th>Type</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {#if $page.url.hash == `#item-${version.name}`}
+                      {#each version.content.egg as move}
+                        {#await loadMove(move.move.move.url)}
+                          <tr>
+                            <th>?</th>
+                            <td>Loading...</td>
+                            <td>?</td>
+                            <td>?</td>
+                            <td>?</td>
+                            <td>?</td>
+                          </tr>
+                        {:then move2}
+                          <tr>
+                            <th>{move.level}</th>
+                            <td>{move2.name}</td>
+                            <td>{move2.accuracy ?? ''}</td>
+                            <td>{move2.power ?? ''}</td>
+                            <td>{move2.damage_class.name ?? ''}</td>
+                            <td class="flex justify-center"><a href="/pokedex/types/{move2.type.name}" class='badge {bgColor(move2.type.name)}'>{move2.type.name ?? ''}</a></td>
+                          </tr>
+                        {/await}
+                      {/each}
+                    {/if}
+                  </tbody>
+                </table>
+              </div>
+            </div>
             
           </div>
         {/each}

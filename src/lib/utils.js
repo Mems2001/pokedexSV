@@ -62,34 +62,45 @@ const handleEvolutions = async(chain) => {
 // FUNCTIONS FOR MOVEMENTS
 const handleVersions = (arr) => {
 	const versions = [
-		{number:1 , name:'scarlet-violet' , content:[]},
-		{number:2 , name:'sword-shield' , content:[]},
-		{number:3 , name:'lets-go-pikachu-lets-go-eevee' , content:[]},
-		{number:4 , name:'ultra-sun-ultra-moon' , content:[]},
-		{number:5 , name:'sun-moon' , content:[]},
-		{number:6 , name:'omega-ruby-alfa-sapphire' , content:[]},
-		{number:7 , name:'x-y' , content:[]},
-		{number:8 , name:'black-2-white-2' , content:[]},
-		{number:9 , name:'xd' , content:[]},
-		{number:10 , name:'colosseum' , content:[]},
-		{number:11 , name:'black-white' , content:[]},
-		{number:12 , name:'heartgold-soulsilver' , content:[]},
-		{number:13 , name:'platimun' , content:[]},
-		{number:14 , name:'diamond-pearl' , content:[]},
-		{number:15 , name:'firered-leafgreen' , content:[]},
-		{number:16 , name:'emerald' , content:[]},
-		{number:17 , name:'ruby-sapphire' , content:[]},
-		{number:18 , name:'crystal' , content:[]},
-		{number:19 , name:'gold-silver' , content:[]},
-		{number:20 , name:'yellow' , content:[]},
-		{number:21 , name:'red-blue' , content:[]}
+		{number:1 , name:'scarlet-violet' , content:{level: [] , machine:[] , egg:[] , tutor:[]}},
+		{number:2 , name:'sword-shield' , content:{level: [] , machine:[] , egg:[] , tutor:[]}},
+		{number:3 , name:'lets-go-pikachu-lets-go-eevee' , content:{level: [] , machine:[] , egg:[] , tutor:[]}},
+		{number:4 , name:'ultra-sun-ultra-moon' , content:{level: [] , machine:[] , egg:[] , tutor:[]}},
+		{number:5 , name:'sun-moon' , content:{level: [] , machine:[] , egg:[] , tutor:[]}},
+		{number:6 , name:'omega-ruby-alfa-sapphire' , content:{level:[] , machine:[] , egg:[] , tutor:[]}},
+		{number:7 , name:'x-y' , content:{level: [] , machine:[] , egg:[] , tutor:[]}},
+		{number:8 , name:'black-2-white-2' , content:{level: [] , machine:[] , egg:[] , tutor:[]}},
+		{number:9 , name:'xd' , content:{level: [] , machine:[] , egg:[] , tutor:[]}},
+		{number:10 , name:'colosseum' , content:{level: [] , machine:[] , egg:[] , tutor:[]}},
+		{number:11 , name:'black-white' , content:{level: [] , machine:[] , egg:[] , tutor:[]}},
+		{number:12 , name:'heartgold-soulsilver' , content:{level: [] , machine:[] , egg:[] , tutor:[]}},
+		{number:13 , name:'platimun' , content:{level: [] , machine:[] , egg:[] , tutor:[]}},
+		{number:14 , name:'diamond-pearl' , content:{level: [] , machine:[] , egg:[] , tutor:[]}},
+		{number:15 , name:'firered-leafgreen' , content:{level: [] , machine:[] , egg:[] , tutor:[]}},
+		{number:16 , name:'emerald' , content:{level: [] , machine:[] , egg:[] , tutor:[]}},
+		{number:17 , name:'ruby-sapphire' , content:{level: [] , machine:[] , egg:[] , tutor:[]}},
+		{number:18 , name:'crystal' , content:{level: [] , machine:[] , egg:[] , tutor:[]}},
+		{number:19 , name:'gold-silver' , content:{level: [] , machine:[] , egg:[] , tutor:[]}},
+		{number:20 , name:'yellow' , content:{level: [] , machine:[] , egg:[] , tutor:[]}},
+		{number:21 , name:'red-blue' , content:{level: [] , machine:[] , egg:[] , tutor:[]}}
 	]
 	
 	for (let element of versions) {
 		for (let move of arr) {
 			for (let version of move.version_group_details) {
 				if (version.version_group.name === element.name) {
-					element.content.push({level: version.level_learned_at , move})
+					if (version.move_learn_method.name === 'level-up') {
+						element.content.level.push({level: version.level_learned_at , move})
+					}
+					if (version.move_learn_method.name === 'machine') {
+						element.content.machine.push({level: version.level_learned_at , move})
+					}
+					if (version.move_learn_method.name === 'egg') {
+						element.content.egg.push({level: version.level_learned_at , move})
+					}
+					if (version.move_learn_method.name === 'tutor') {
+						element.content.tutor.push({level: version.level_learned_at , move})
+					}
 				}
 			}
 		}
